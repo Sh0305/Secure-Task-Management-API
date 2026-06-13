@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "password")
 public class User {
 
     @Id
@@ -36,6 +37,8 @@ public class User {
 
     // This will store a BCrypt hash, never plain text
     @Column(nullable = false)
+    private String password;
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
