@@ -81,4 +81,11 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiError(500, "Something went wrong. Please try again."));
     }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiError> handleIllegalArgument(
+        IllegalArgumentException ex) {
+    return ResponseEntity
+            .badRequest()
+            .body(new ApiError(400, ex.getMessage()));
+    }
 }
