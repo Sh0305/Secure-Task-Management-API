@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.securetask.taskmanager.dto.UserResponse;
+import com.securetask.taskmanager.exception.InvalidRequestException;
 import com.securetask.taskmanager.exception.ResourceNotFoundException;
 import com.securetask.taskmanager.model.AuditLog;
 import com.securetask.taskmanager.model.User;
@@ -32,12 +34,20 @@ public class AdminController {
     // See all registered users
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+        List<UserResponse> users = userRepository.findAll().stream()
+                .map(u -> UserResponse.builder()
+                        .id(u.getId())
+                        .name(u.getName())
+                        .email(u.getEmail())
+                        .role(u.getRole().name())
+                        .build())
+                .toList();
+        return ResponseEntity.ok(users);
     }
 
     // Delete a user by id
-   @DeleteMapping("/users/{id}")
-   public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User", id);
         }
@@ -51,13 +61,11 @@ public class AdminController {
             @PathVariable Long id,
             @RequestParam String role) {
         User user = userRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User", id));
+                .orElseThrow(() -> new ResourceNotFoundException("User", id));
         try {
-           user.setRole(User.Role.valueOf(role.toUpperCase()));
-        }
-        catch (IllegalArgumentException e) {
-            throw new InvalidRequestException(
-            "Role must be ADMIN or USER");
+            user.setRole(User.Role.valueOf(role.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new InvalidRequestException("Role must be ADMIN or USER");
         }
         userRepository.save(user);
         return ResponseEntity.ok("Role updated to " + role.toUpperCase());
@@ -67,5 +75,17 @@ public class AdminController {
     @GetMapping("/audit-logs")
     public ResponseEntity<List<AuditLog>> getAuditLogs() {
         return ResponseEntity.ok(auditLogRepository.findAll());
+    }
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUsers1() {
+        List<UserResponse> users = userRepository.findAll().stream()
+        .map(u -> UserResponse.builder()
+                .id(u.getId())
+                .name(u.getName())
+                .email(u.getEmail())
+                .role(u.getRole().name())
+                .build())
+                .toList();
+        return ResponseEntity.ok(users);
     }
 }
