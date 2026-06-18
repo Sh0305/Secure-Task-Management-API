@@ -1,4 +1,4 @@
-package com.securetask.taskmanager.controller;
+package com.securetask.taskmanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
