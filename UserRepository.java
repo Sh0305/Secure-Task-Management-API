@@ -3,11 +3,9 @@ package com.securetask.taskmanager.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.securetask.taskmanager.model.User;
 
-@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Spring reads this method name and writes the SQL automatically
