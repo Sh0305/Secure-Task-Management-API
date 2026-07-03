@@ -60,9 +60,3 @@ The system is built on a modular backend architecture to ensure separation of co
 * **Request Validation:** Implementing Hibernate Validator to enforce strict data constraints at the DTO level, further hardening the system against bad input.
 
 * **Audit Logging:** Introducing SLF4J/Logback to maintain an audit trail of critical user actions, which is essential for system observability and security compliance.
-
-
-
----
-
-You are now fully ready to commit this `README.md` to your GitHub. Is there anything else you need to finalize before you submit your application?
